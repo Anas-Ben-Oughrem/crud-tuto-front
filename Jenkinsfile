@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages{
-        stage('Compile-package'){
+        stage('Compile'){
             steps{
                 script{
                     sh 'ng build'

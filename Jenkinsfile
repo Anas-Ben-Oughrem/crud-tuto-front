@@ -23,7 +23,7 @@ pipeline {
                 }
             }
         
-        stage("Quality gate status check") {
+        /*stage("Quality gate status check") {
             steps {
                 script{
               timeout(time: 1, unit: 'HOURS') {
@@ -35,7 +35,7 @@ pipeline {
                 }
               }
             }
-          }
+          }*/
         stage('Email Notification'){
             steps{
                 script{
@@ -50,6 +50,18 @@ Anas''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'anasbo7@hot
             steps{
                 script{
                     slackSend baseUrl: 'https://hooks.slack.com/services/', channel: '#jenkins-notifications', color: 'good', message: 'Welcome to jenkins notifications channel, legionaries. Sent from Jenkins', teamDomain: 'Legion14', tokenCredentialId: 'slack-channel'
+                }
+            }
+        }
+        stage('Build And Deploy Docker Image'){
+            steps{
+                script{
+                    echo "deploying the application"
+                    withCredentials([usernamePassword(credentialsId:'nexus-docker-repo',usernameVariable:'USER',passwordVariable:'PWD')]) {
+                        sh "echo $PWD | docker login -u $USER --password-stdin localhost:8083"
+                        sh "docker build -t localhost:8083/angular-app:1.0 ."
+                        sh "docker push localhost:8083/angular-app:1.0"
+
                 }
             }
         }

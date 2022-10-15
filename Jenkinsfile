@@ -22,16 +22,20 @@ pipeline {
                     }
                 }
             }
-          stage('Quality Gates'){
-      
-     timeout(time: 1, unit: 'HOURS') {
-    def qg = waitForQualityGate() 
-    if (qg.status != 'OK') {
-      error "Pipeline aborted due to quality gate failure: ${qg.status}"
-    }
-  }
-      
-  }
+        
+        stage("Quality gate status check") {
+            steps {
+                script{
+              timeout(time: 1, unit: 'HOURS') {
+                def qg = waitForQualityGate()
+                if(qg.status != 'OK') {
+                    slackSend baseUrl: 'https://hooks.slack.com/services/', channel: '#jenkins-notifications', color: 'danger', message: 'Pipeline aborted: Sonarqube Analysis marked as failed', teamDomain: 'Legion14', tokenCredentialId: 'slack-channel'
+                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                }
+                }
+              }
+            }
+          }
         stage('Email Notification'){
             steps{
                 script{

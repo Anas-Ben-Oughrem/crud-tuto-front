@@ -15,7 +15,7 @@ pipeline {
                     }
                 }
             }
-        }
+        
         stage("Quality gate status check") {
             steps {
                 script{

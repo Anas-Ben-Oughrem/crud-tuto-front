@@ -18,10 +18,10 @@ pipeline {
         stage('Sonarqube Analysis'){
             steps{
                 nodejs(nodeJSInstallationName: 'nodejs'){
-                    
+                    withSonarQubeEnv('sonar2'){
                         sh 'npm install sonar-scanner --force'
                         sh 'npm run sonar'
-                        
+                        }
                     }
                 }
             }

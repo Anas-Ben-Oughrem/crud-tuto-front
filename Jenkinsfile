@@ -18,27 +18,23 @@ pipeline {
         stage('Sonarqube Analysis'){
             steps{
                 nodejs(nodeJSInstallationName: 'nodejs'){
-                    withSonarQubeEnv('sonar'){
-                        sh 'npm install -D sonar-scanner --force'
+                    
+                        sh 'npm install sonar-scanner --force'
                         sh 'npm run sonar'
-                        }
+                        
                     }
                 }
             }
         
-        /*stage("Quality gate status check") {
+        stage("Quality gate status check") {
             steps {
                 script{
-              timeout(time: 1, unit: 'HOURS') {
-                def qg = waitForQualityGate()
-                if(qg.status != 'OK') {
-                    slackSend baseUrl: 'https://hooks.slack.com/services/', channel: '#jenkins-notifications', color: 'danger', message: 'Pipeline aborted: Sonarqube Analysis marked as failed', teamDomain: 'Legion14', tokenCredentialId: 'slack-channel'
-                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              waitForQualityGate abortPipeline: false, credentialsId: 'sonar-image'
                 }
                 }
               }
-            }
-          }*/
+            
+          
         stage('Email Notification'){
             steps{
                 script{

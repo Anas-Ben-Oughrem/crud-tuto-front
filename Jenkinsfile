@@ -64,8 +64,8 @@ Anas''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'anasbo7@hot
                     echo "deploying the application"
                     withCredentials([usernamePassword(credentialsId:'nexus-docker-repo',usernameVariable:'USER',passwordVariable:'PWD')]) {
                         sh "echo $PWD | docker login -u $USER --password-stdin localhost:8083"
-                        sh "docker build -t localhost:8083/angular-app:1.0 ."
-                        sh "docker push localhost:8083/angular-app:1.0"
+                        sh "docker build -t anasbenouaghrem/angular-app:1.0 ."
+                        sh "docker push anasbenouaghrem/angular-app:1.0"
 
                 }
             }

@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: angular-app
 spec:
+  replicas: 1
+  
   selector:
     matchLabels:
       app: angular-app
@@ -13,7 +15,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: localhost:8083/angular-app
+        image: anasbenouaghrem/angular-app:1.0
         imagePullPolicy: IfNotPresent
         resources:
           limits:
